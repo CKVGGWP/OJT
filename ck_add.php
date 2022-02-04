@@ -1,8 +1,8 @@
 <?php
 
 if (isset($_POST['add'])) {
-    $firstName = $_POST['FirstName'];
-    $lastName = $_POST['LastName'];
+    $firstName = trim($_POST['FirstName']);
+    $lastName = trim($_POST['LastName']);
     $birthDate = $_POST['birthdate'];
     $gender = isset($_POST['gender']) ? $_POST['gender'] : '';
 
@@ -10,19 +10,20 @@ if (isset($_POST['add'])) {
 
     if (!empty($firstName) && !empty($lastName) && !empty($birthDate) && !empty($gender)) {
 
-        $check = "SELECT * FROM ck_table WHERE firstname LIKE '%$firstName%' AND lastname LIKE '%$lastName%'";
+        $check = "SELECT * FROM ck_table WHERE firstname = '$firstName' AND lastname = '$lastName'";
         $checkQuery = mysqli_query($conn, $check);
 
         if (mysqli_num_rows($checkQuery) > 0) {
             echo "<div class='alert alert-danger text-center'>Name Already Inserted!</div>";
         } else {
-            $sql = "INSERT INTO ck_table (firstname, lastname, birthdate, gender) VALUES ('$firstname', '$lastname', '$birthdate', '$gender')";
+            $sql = "INSERT INTO ck_table (firstname, lastname, birthdate, gender) VALUES ('$firstName', '$lastName', '$birthDate', '$gender')";
             $query = mysqli_query($conn, $sql);
 
             if ($query) {
-                header("location : ck_index.php");
+                echo "<script>alert('User Inserted Successfully!');
+                window.location.href='ck_index.php';</script>";
             } else {
-                echo 'Error';
+                echo "<div class='alert alert-danger text-center'>Query Error!</div>";
             }
         }
     } else {
@@ -31,7 +32,6 @@ if (isset($_POST['add'])) {
 }
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,27 +46,32 @@ if (isset($_POST['add'])) {
 
 <body>
 
-    <main class="container d-flex justify-content-center align-items-center">
-        <div class="card">
-            <div class="card-header text-center">
-                <strong>
-                    Add Data
-                </strong>
-            </div>
-            <div class="card-body">
-                <div class="col-md-12">
-                    <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
-                        <label for="First Name">First Name: </label>
-                        <input type="text" class="form-control" name="FirstName">
-                        <label for="Last Name">Last Name</label>
-                        <input type="text" class="form-control" name="LastName">
-                        <label for="Birthdate">Birthdate: </label>
-                        <input type="date" class="form-control" name="birthdate">
-                        <label for="Gender">Gender: </label>
-                        <input type="radio" name="gender" value="Male">Male
-                        <input type="radio" name="gender" value="Female">Female
-                        <button type="submit" name="add" class="btn btn-primary">Add</button>
-                    </form>
+    <main class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center">
+                    <strong>
+                        Add Data
+                    </strong>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <form action="<?php $_SERVER['PHP SELF'] ?>" method="POST">
+                            <label for="First Name">First Name: </label>
+                            <input type="text" class="form-control" name="FirstName">
+                            <label for="Last Name">Last Name</label>
+                            <input type="text" class="form-control" name="LastName">
+                            <label for="Birthdate">Birthdate: </label>
+                            <input type="date" class="form-control" name="birthdate">
+                            <label for="Gender">Gender: </label>
+                            <input type="radio" name="gender" value="Male">Male
+                            <input type="radio" name="gender" value="Female">Female
+                            <div class="d-flex justify-content-center align-items-center mx-5 my-2">
+                                <button type="submit" name="add" class="btn btn-primary">Add</button>
+                                <a href="ck_index.php" class="btn btn-warning">Back</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

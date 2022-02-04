@@ -3,8 +3,8 @@
 <?php
 
 if (isset($_POST['edit'])) {
-    $firstName = $_POST['FirstName'];
-    $lastName = $_POST['LastName'];
+    $firstName = trim($_POST['FirstName']);
+    $lastName = trim($_POST['LastName']);
     $birthDate = $_POST['birthdate'];
     $gender = $_POST['gender'];
     $id = $_POST['hiddenID'];
@@ -13,7 +13,7 @@ if (isset($_POST['edit'])) {
 
     if (!empty($firstName) && !empty($lastName) && !empty($birthDate) && !empty($gender)) {
 
-        $check = "SELECT * FROM ck_table WHERE firstname LIKE '$firstName' AND lastname LIKE '$lastName'";
+        $check = "SELECT * FROM ck_table WHERE firstname = '$firstName' AND lastname = '$lastName'";
         $checkQuery = mysqli_query($conn, $check);
 
         if (mysqli_num_rows($checkQuery) > 0) {
@@ -52,38 +52,39 @@ if (isset($_POST['edit'])) {
 
 <body>
 
-    <main class="container d-flex justify-content-center align-items-center">
-        <div class="card">
-            <div class="card-header text-center">
-                <strong>
-                    Edit Modal
-                </strong>
-            </div>
-            <div class="card-body">
-                <div class="col-md-12">
-                    <form action="ck_modal.php" method="POST">
-                        <?php foreach ($userById as $key => $data) : ?>
-                            <label for="First Name">First Name: </label>
-                            <input type="hidden" name="hiddenID" value="<?php echo $data['id']; ?>">
-                            <input type="text" class="form-control" name="FirstName" value="<?php echo $data['firstname']; ?>">
-                            <label for="Last Name">Last Name</label>
-                            <input type="text" class="form-control" name="LastName" value="<?php echo $data['lastname']; ?>">
-                            <label for="Birthdate">Birthdate: </label>
-                            <input type="date" class="form-control" name="birthdate" value="<?php echo $data['birthdate']; ?>">
-                            <label for="Gender">Gender: </label>
-                            <input type="radio" name="gender" value="Male" <?php if ($data['gender'] == "Male") echo "checked"; ?>>Male
-                            <input type="radio" name="gender" value="Female" <?php if ($data['gender'] == "Female") echo "checked"; ?>>Female
-                        <?php endforeach ?>
-                        <button type="submit" name="edit" class="btn btn-primary">Edit</button>
-
-                    </form>
+    <main class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center">
+                    <strong>
+                        Edit Modal
+                    </strong>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
+                            <?php foreach ($userById as $key => $data) : ?>
+                                <label for="First Name">First Name: </label>
+                                <input type="hidden" name="hiddenID" value="<?php echo $data['id']; ?>">
+                                <input type="text" class="form-control" name="FirstName" value="<?php echo $data['firstname']; ?>">
+                                <label for="Last Name">Last Name</label>
+                                <input type="text" class="form-control" name="LastName" value="<?php echo $data['lastname']; ?>">
+                                <label for="Birthdate">Birthdate: </label>
+                                <input type="date" class="form-control" name="birthdate" value="<?php echo $data['birthdate']; ?>">
+                                <label for="Gender">Gender: </label>
+                                <input type="radio" name="gender" value="Male" <?php if ($data['gender'] == "Male") echo "checked"; ?>>Male
+                                <input type="radio" name="gender" value="Female" <?php if ($data['gender'] == "Female") echo "checked"; ?>>Female
+                            <?php endforeach ?>
+                            <div class="d-flex mx-5 my-3 justify-content-center align-items-center">
+                                <button type="submit" name="edit" class="btn btn-primary">Edit</button>
+                                <a href="ck_index.php" class="btn btn-warning">Back</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
-
-
-
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>

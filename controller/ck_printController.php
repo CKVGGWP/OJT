@@ -4,49 +4,84 @@ require('../fpdf/fpdf.php');
 
 $conn = mysqli_connect("localhost", "root", "", "ojtdb");
 
-class PDF extends FPDF
-{
-    function Header()
-    {
-        $this->SetFont('Arial', 'B', 15);
 
-        $this->Cell(12);
+if (isset($_POST['export'])) {
 
-        $this->Ln(5);
+    $checkbox = isset($_POST['check']) ? $_POST['check'] : '';
 
-        $this->Cell(100, 0, 'Exercise 3', 0, 1);
+    $sql = '';
 
-        $this->Cell(25, 5, 'ID', 1, 0);
-        $this->Cell(40, 5, 'First Name', 1, 0);
-        $this->Cell(40, 5, 'Last Name', 1, 0);
-        $this->Cell(30, 5, 'Birthdate', 1, 0);
-        $this->Cell(25, 5, 'Gender', 1, 0);
+    if (empty($checkbox)) {
+        $sql = "SELECT * FROM ck_table";
+    } else {
+        $newVal = implode("','", $checkbox);
+
+        $sql = "SELECT * FROM ck_table WHERE id IN ('$newVal')";
     }
 
-    function Footer()
-    {
-        $this->SetY(-15);
+    $result = mysqli_query($conn, $sql);
 
-        $this->SetFont('Arial', '', 8);
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=ck_export.csv');
+    $output = fopen('php://output', 'w');
 
-        $this->Cell(0, 10, 'Page ' . $this->PageNo() . " / {pages}", 0, 0, 'C');
+    fputcsv($output, array('#', 'First Name', 'Last Name', 'Birthdate', 'Gender'));
+
+    foreach ($result as $key => $report) {
+        fputcsv($output, $report);
     }
-}
 
-$pdf = new PDF('P', 'mm', 'A4');
-
-$pdf->AliasNbPages('{pages}');
-
-$pdf->AddPage();
-
-function staticCount()
-{
-    static $count = 0;
-    $count++;
-    return $count;
+    fclose($output);
 }
 
 if (isset($_POST['print'])) {
+
+    class PDF extends FPDF
+    {
+        function Header()
+        {
+            $this->SetFont('Arial', 'B', 12);
+
+            $this->SetFillColor(180, 180, 255);
+            $this->SetDrawColor(50, 50, 100);
+
+            $this->Cell(25, 5, '#', 1, 0, 'C', true);
+            $this->Cell(40, 5, 'First Name', 1, 0, 'C', true);
+            $this->Cell(40, 5, 'Last Name', 1, 0, 'C', true);
+            $this->Cell(30, 5, 'Birthdate', 1, 0, 'C', true);
+            $this->Cell(25, 5, 'Gender', 1, 0, 'C', true);
+            $this->Ln();
+        }
+
+        function Footer()
+        {
+            $this->SetY(-15);
+
+            $this->SetFont('Arial', '', 8);
+
+            $this->Cell(0, 10, 'Page ' . $this->PageNo() . " / {pages}", 0, 0, 'C');
+        }
+    }
+
+    $pdf = new PDF('P', 'mm', 'A4');
+
+    $pdf->AliasNbPages('{pages}');
+
+    $pdf->AddPage();
+
+    $pdf->SetFont('Arial', '', '10');
+
+    $pdf->SetY(10);
+
+
+    function staticCount()
+    {
+        static $count = 0;
+        $count++;
+        return $count;
+    }
+
+
     $checkbox = isset($_POST['check']) ? $_POST['check'] : '';
 
     $sql = '';
@@ -62,14 +97,19 @@ if (isset($_POST['print'])) {
 
     $query = mysqli_query($conn, $sql);
 
-    while ($data = mysqli_fetch_array($query)) {
-        $pdf->Ln(5);
-        $pdf->Cell(25, 5, staticCount(), 1, 0);
-        $pdf->Cell(40, 5, $data['firstname'], 1, 0);
-        $pdf->Cell(40, 5, $data['lastname'], 1, 0);
-        $pdf->Cell(30, 5, $data['birthdate'], 1, 0);
-        $pdf->Cell(25, 5, $data['gender'], 1, 0);
-    }
-}
+    $pdf->SetFillColor(235, 236, 236);
 
-$pdf->Output();
+    $fill = false;
+
+    while ($data = mysqli_fetch_array($query)) {
+        $fill = !$fill;
+        $pdf->Ln(5);
+        $pdf->Cell(25, 5, staticCount(), 1, 0, 'C', $fill);
+        $pdf->Cell(40, 5, $data['firstname'], 1, 0, 'C', $fill);
+        $pdf->Cell(40, 5, $data['lastname'], 1, 0, 'C', $fill);
+        $pdf->Cell(30, 5, $data['birthdate'], 1, 0, 'C', $fill);
+        $pdf->Cell(25, 5, $data['gender'], 1, 0, 'C', $fill);
+    }
+
+    $pdf->Output();
+}

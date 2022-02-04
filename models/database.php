@@ -57,4 +57,38 @@ class Database
 
         return $result;
     }
+
+    public function displayMale()
+    {
+        $sql = "SELECT COUNT(id) AS maleCount FROM ck_table WHERE gender = 'Male'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function displayFemale()
+    {
+        $sql = "SELECT COUNT(id) AS femaleCount FROM ck_table WHERE gender = 'Female'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function displayGenderCount()
+    {
+        $sql = '';
+        $sql = "SELECT SUM(CASE gender WHEN 'Male' THEN 1 ELSE 0 END) AS maleCount,";
+        $sql .= "SUM(CASE gender WHEN 'Female' THEN 1 ELSE 0 END) AS femaleCount FROM ck_table";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function displayBirthdateCount()
+    {
+        $sql = "SELECT MONTHNAME(birthdate) AS month, COUNT(id) AS total FROM ck_table GROUP BY MONTHNAME(birthdate)";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
 }

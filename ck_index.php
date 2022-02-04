@@ -26,8 +26,8 @@ if (isset($_POST['search'])) {
 <body>
 
     <main class="container d-flex justify-content-center align-items-center">
-        <div class="col-md-2"></div>
-        <div class="col-md-8 justify-content-center align-items-center">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 justify-content-center align-items-center">
             <div class="card">
                 <div class="card-header text-center">
                     <strong>
@@ -35,6 +35,7 @@ if (isset($_POST['search'])) {
                     </strong>
 
                     <a href="ck_add.php" class="btn btn-primary float-end mx-3">Add Data</a>
+                    <a href="ck_graph.php" class="btn btn-secondary float-end mx-3">View Graph</a>
                 </div>
                 <div class="card-body">
                     <div class="col-md-12">
@@ -55,6 +56,9 @@ if (isset($_POST['search'])) {
                                 <thead class="text-center">
                                     <tr>
                                         <td class="text-center" colspan="7"><button type="submit" class="btn btn-primary w-100" name="print">Print</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="7"><button type="submit" class="btn btn-secondary w-100" name="export">Export to CSV</button></td>
                                     </tr>
                                     <tr>
                                         <td class="text-center">Select/Select All <input type="checkbox" id="checkAll"></td>
@@ -111,7 +115,7 @@ if (isset($_POST['search'])) {
                 </div>
             </div>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
     </main>
 
 </body>
