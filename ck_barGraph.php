@@ -14,29 +14,12 @@
     <script>
         am4core.ready(function() {
             let chart = am4core.createFromConfig({
-                    "type": "PieChart",
-                    "data": [<?php echo $newData; ?>],
-                    "series": [{
-                        "type": "PieSeries",
-                        "dataFields": {
-                            "value": "total",
-                            "category": "month"
-                        }
-                    }],
-                    "radius": "60%"
-                },
-                document.getElementById('chartdiv')
-            );
-        });
-
-        am4core.ready(function() {
-            let chart = am4core.createFromConfig({
                     "type": "XYChart",
-                    "data": [<?php echo $newData; ?>],
+                    "data": [<?php echo $newData3; ?>],
                     "xAxes": [{
                         "type": "CategoryAxis",
                         "dataFields": {
-                            "category": "month"
+                            "category": "age_group"
                         },
                         "renderer": {
                             "grid": {
@@ -62,18 +45,20 @@
                                 "type": "Column",
                                 "strokeOpacity": 0,
                                 "tooltipText": "{categoryX}\n{valueY}",
-                                "tooltipPosition": "pointer"
+                                "tooltipPosition": "pointer",
+                                "url": "ck_index.php?ageGroup={categoryX}",
+                                "urlTarget": "_blank"
                             }
                         },
                         "dataFields": {
-                            "valueY": "total",
-                            "categoryX": "month"
+                            "valueY": "age_count",
+                            "categoryX": "age_group"
                         },
                         "sequencedInterpolation": true,
-                        "sequencedInterpolationDelay": 100
+                        "sequencedInterpolationDelay": 100,
                     }]
                 },
-                document.getElementById('chartdiv2')
+                document.getElementById('chartdiv')
             );
         });
     </script>
@@ -82,9 +67,6 @@
 <body>
 
     <div id="chartdiv" style="width:100%; height:500px;"></div>
-    <div id="chartdiv2" style="width:100%; height:500px;"></div>
-
-
 
 </body>
 

@@ -91,4 +91,83 @@ class Database
 
         return $result;
     }
+
+    public function displayBirthdateCountByGender()
+    {
+        $sql = "SELECT MONTHNAME(birthdate) AS month, COUNT(*) AS total, 
+        COUNT(CASE WHEN gender = 'MALE' THEN id END) AS male, 
+        COUNT(CASE WHEN gender = 'Female' THEN id END) AS female 
+        FROM ck_table GROUP BY MONTHNAME(birthdate) 
+        ORDER BY MONTHNAME(birthdate) ASC";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function displayAgeGroup()
+    {
+        $sql = "SELECT t.age_group, COUNT(*) AS age_count
+        FROM
+        (
+            SELECT
+                CASE WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 0 AND 12
+                    THEN 'Children'
+                    WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 13 AND 17
+                    THEN 'Teens'
+                    WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 18 AND 30
+                    THEN 'Young Adult'
+                    WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 31 AND 59
+                    THEN 'Adult'
+                    ELSE 'Senior'
+                END AS age_group
+            FROM ck_table
+        ) t
+        GROUP BY t.age_group";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function displayAgeGroupByCategory($cat = '')
+    {
+        $sql = "SELECT *
+        FROM
+        (
+            SELECT *,
+                CASE WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 0 AND 12
+                    THEN 'Children'
+                    WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 13 AND 17
+                    THEN 'Teens'
+                    WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 18 AND 30
+                    THEN 'Young Adult'
+                    WHEN TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) BETWEEN 31 AND 59
+                    THEN 'Adult'
+                    ELSE 'Senior'
+                END AS age_group
+            FROM ck_table
+        ) AS t WHERE age_group = '$cat'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function countRecords()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM ck_table";
+        $result = $this->conn->query($sql);
+        $data = '';
+
+        while ($row = $result->fetch_assoc()) {
+            $data = $row['total'];
+        }
+
+        return $data;
+    }
+
+    public function returnSQL()
+    {
+        $sql = "SELECT * FROM ck_table";
+        $sqlData = trim(preg_replace('/\s+/', ' ', $sql));
+        return $sqlData;
+    }
 }

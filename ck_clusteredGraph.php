@@ -14,25 +14,8 @@
     <script>
         am4core.ready(function() {
             let chart = am4core.createFromConfig({
-                    "type": "PieChart",
-                    "data": [<?php echo $newData; ?>],
-                    "series": [{
-                        "type": "PieSeries",
-                        "dataFields": {
-                            "value": "total",
-                            "category": "month"
-                        }
-                    }],
-                    "radius": "60%"
-                },
-                document.getElementById('chartdiv')
-            );
-        });
-
-        am4core.ready(function() {
-            let chart = am4core.createFromConfig({
                     "type": "XYChart",
-                    "data": [<?php echo $newData; ?>],
+                    "data": [<?php echo $newData2; ?>],
                     "xAxes": [{
                         "type": "CategoryAxis",
                         "dataFields": {
@@ -50,30 +33,45 @@
                     }],
                     "yAxes": [{
                         "type": "ValueAxis",
-                        "min": 0,
                         "renderer": {
                             "maxLabelPosition": 0.98
                         }
                     }],
                     "series": [{
                         "type": "ColumnSeries",
+                        "name": "Series 1",
                         "columns": {
                             "template": {
                                 "type": "Column",
                                 "strokeOpacity": 0,
-                                "tooltipText": "{categoryX}\n{valueY}",
-                                "tooltipPosition": "pointer"
+                                "tooltipText": "{categoryX}\n{valueY}"
                             }
                         },
                         "dataFields": {
-                            "valueY": "total",
+                            "valueY": "male",
+                            "categoryX": "male"
+                        },
+                        "sequencedInterpolation": true,
+                        "sequencedInterpolationDelay": 100
+                    }, {
+                        "type": "ColumnSeries",
+                        "name": "Series 2",
+                        "columns": {
+                            "template": {
+                                "type": "Column",
+                                "strokeOpacity": 0,
+                                "tooltipText": "{categoryX}\n{valueY}"
+                            }
+                        },
+                        "dataFields": {
+                            "valueY": "female",
                             "categoryX": "month"
                         },
                         "sequencedInterpolation": true,
                         "sequencedInterpolationDelay": 100
                     }]
                 },
-                document.getElementById('chartdiv2')
+                document.getElementById('chartdiv')
             );
         });
     </script>
@@ -82,9 +80,6 @@
 <body>
 
     <div id="chartdiv" style="width:100%; height:500px;"></div>
-    <div id="chartdiv2" style="width:100%; height:500px;"></div>
-
-
 
 </body>
 
