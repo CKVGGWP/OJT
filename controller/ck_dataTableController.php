@@ -15,8 +15,23 @@ $query = $db->query($sql);
 if ($query and $query->num_rows > 0) {
     while ($result = $query->fetch_assoc()) {
         extract($result);
+        if ($id == 3) {
+            $newId = 1;
+            $newId = $newId + $id;
+        }
+
 
         $data[] = [
+            'DT_RowId' => $id,
+            'DT_RowClass' => 'row_' . $id,
+            'DT_RowAttr' => ['data-id' => $id],
+            'id' => $id,
+            'firstName' => $firstName,
+
+
+
+
+
             $id,
             $firstname,
             $lastname,
