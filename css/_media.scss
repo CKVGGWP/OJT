@@ -1,0 +1,30 @@
+@media screen and (max-width : 425px) {
+    .buttons {
+        width: 70%;
+    }
+
+    .mobile-view-nav {
+        left: 12.3rem;
+
+        .ulGap {
+            gap: 0;
+        }
+    }
+}
+
+@media screen and (max-width : 375px) {
+    .mobile-view-nav {
+        left: 10.5rem;
+
+    }
+}
+
+@media screen and (max-width : 320px) {
+    .buttons {
+        width: unset;
+    }
+
+    .mobile-view-nav {
+        left: 9rem;
+    }
+}
