@@ -7,11 +7,11 @@
 
 <body>
 
-    <header class="text-primary text-center border border-primary m-3">
+    <header class="container-fluid">
         <?php include('views/header/header.php'); ?>
     </header>
 
-    <main class="d-flex vh-100 mx-3">
+    <main class="row">
         <?php include('views/body/section.php'); ?>
     </main>
 

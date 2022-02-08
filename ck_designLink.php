@@ -16,11 +16,11 @@ $sqlData = trim(preg_replace('/\s+/', ' ', $sql));
 
 <body>
 
-    <header class="text-primary text-center border border-primary m-3">
+    <header class="container-fluid">
         <?php include('views/header/header_link.php'); ?>
     </header>
 
-    <main class="mx-3">
+    <main class="row">
         <?php include('views/body/section_link.php'); ?>
     </main>
 

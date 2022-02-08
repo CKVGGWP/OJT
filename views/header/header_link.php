@@ -1,6 +1,4 @@
-    <div class="d-flex float-start m-2">
-        <a href="ck_designIndex.php" class="btn btn-primary">Home</a>
-    </div>
-    <div>
-        <h1>Header</h1>
+    <div class="header">
+        <a href="index.php" type="button" class="btn btn-light">HOME</a>
+        <h1 class="header-title">HEADER</h1>
     </div>

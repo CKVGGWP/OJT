@@ -1,66 +1,79 @@
-<section class="vh-100 border border-primary">
-    <div class="col-md-1"></div>
-    <div class="col-md-10 justify-content-center align-items-center">
-        <div class="card">
-            <div class="card-header text-center">
-                <strong>
-                    <span class="float-start">Records: <?php echo $totalRecords; ?></span>
-                </strong>
-                <strong>
-                    <span class="justify-content-center align-items-center d-flex">Exercise 3</span>
-                </strong>
-
-                <a href="ck_add.php" class="btn btn-primary float-end mx-3">Add Data</a>
-                <a href="ck_graph.php" class="btn btn-secondary float-end mx-3">View Graph</a>
+<section class="col">
+    <div class="content">
+        <div class="card text-center">
+            <div class="card-header">
+                Table
+            </div>
+            <div class="notif m-2">
+                <?php
+                if (isset($_SESSION['error'])) {
+                    echo "
+                                    <div class='alert alert-danger alert-dismissible'>
+                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                    <h5><i class='icon fa fa-warning'></i> Error!</h5>
+                                    <small>" . $_SESSION['error'] . "</small>
+                                    </div>";
+                    unset($_SESSION['error']);
+                }
+                if (isset($_SESSION['success'])) {
+                    echo "
+                                    <div class='alert alert-success alert-dismissible'>
+                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                    <h5><i class='icon fa fa-check'></i> Success!</h5>
+                                    <small>" . $_SESSION['success'] . "</small>
+                                    </div>";
+                    unset($_SESSION['success']);
+                }
+                ?>
             </div>
             <div class="card-body">
-                <div class="mb-3">
-                    <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST" class="d-flex justify-content-center align-items-center border-secondary border-bottom">
-                        <div class="input-group mb-3">
-                            <input type="search" class="form-control" name="firstName" placeholder="First Name">
+                <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>" class="p-2">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="firstname">FIRSTNAME:</label>
+                            <input type="search" class="form-control" id="firstname" name="firstname">
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="search" class="form-control mx-3" name="lastName" placeholder="Last Name">
+                        <div class="col">
+                            <label for="lastname">LASTNAME:</label>
+                            <input type="search" class="form-control" id="lastname" name="lastname">
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="submit" name="search" class="btn btn-primary" value="Search">
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-12">
-                    <form action="./controller/ck_printController.php" method="POST">
-                        <button type="submit" class="btn btn-primary w-100 mb-3" name="print">Print</button>
-                        <button type="submit" class="btn btn-secondary w-100 mb-3" name="export">Export to CSV</button>
-
-                        <table class="table table-condensed table-bordered" id="mainTableId">
-
-                            <thead class="text-center">
-
-                                <tr>
-                                    <td class="text-center">ID</td>
-                                    <td class="text-center">First Name</td>
-                                    <td class="text-center">Last Name</td>
-                                    <td class="text-center">Birthdate</td>
-                                    <td class="text-center">Gender</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </form>
-
-                </div>
+                        <button style="margin-top: 30px;" type="submit" class="btn btn-sm mr-2" id="filter" name="filter">Filter</button>
+                        <button style="margin-top: 30px;" type="button" data-toggle="modal" data-target="#addModal" class="btn btn-outline-info btn-sm add">Add</button>
+                    </div>
+                </form>
+                <form method="POST" action="./controller/ck_printController.php" class="p-3">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="submit" name="print" class="btn btn-danger btn-sm print mb-2">PRINT PDF</button>
+                        <button type="submit" name="export" class="btn btn-success btn-sm print mb-2">PRINT CSV</button>
+                    </div>
+                    <br>
+                    <label>Records : <?php echo $totalRecords; ?></label>
+                    <table class="table table-bordered table-striped" id="mainTableId">
+                        <thead>
+                            <th>#</th>
+                            <th><input type="checkbox" id="checkAll" title="Mark All"></th>
+                            <th>ID</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Birthday</th>
+                            <th>Gender</th>
+                            <th>Action</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
     </div>
-    <div class="col-md-1"></div>
 </section>
